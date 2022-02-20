@@ -13,3 +13,8 @@
 #pragma comment(lib,"vfw32.lib")
 
 #define DLL_EXPORT	__declspec(dllexport)
+
+#define CVP_MAX_TRACKBAR	64
+
+using namespace std;
+using namespace cv;
