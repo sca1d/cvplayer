@@ -9,6 +9,8 @@
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc/imgproc_c.h"
 
+#include "opencv2/core/cuda.hpp"
+
 #pragma comment(lib,"comctl32.lib")
 #pragma comment(lib,"vfw32.lib")
 
