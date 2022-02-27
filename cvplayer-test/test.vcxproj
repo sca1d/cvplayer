@@ -90,7 +90,7 @@
     <IncludePath>F:\opencv\opencv-4.5.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\opencv\opencv-4.5.5\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\..\build\x64\Debug</OutDir>
-    <IntDir>.\objects\x64\Release</IntDir>
+    <IntDir>.\objects\x64\Debug</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

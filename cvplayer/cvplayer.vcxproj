@@ -76,6 +76,7 @@
     <IntDir>.\objects\x86\Debug</IntDir>
     <IncludePath>F:\opencv\opencv-4.5.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\opencv\opencv-4.5.5\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,6 +91,7 @@
     <IntDir>.\objects\x64\Debug</IntDir>
     <IncludePath>F:\opencv\opencv-4.5.5\include;$(IncludePath)</IncludePath>
     <LibraryPath>F:\opencv\opencv-4.5.5\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
