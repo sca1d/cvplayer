@@ -77,7 +77,9 @@ namespace cvp {
 
 	}
 
-	void cvplayer::MainLoop(FrameCallback framecb, void* data) {
+	void cvplayer::MainLoop(FrameCallback framecb, void* data, KeyCallBack keycb) {
+
+		int brk = 0;
 
 		MatCheck(&src);
 
@@ -96,7 +98,22 @@ namespace cvp {
 
 			update > 0 ? update = 0 : 0 ;
 
-			if (waitKey(30) == 27) break;
+			int keycode = waitKey(30);
+
+			if (keycb != nullptr) {
+				keycb(keycode);
+			}
+
+			switch (keycode) {
+
+			case 27:
+			case 'q':
+				brk = 1;
+				break;
+
+			}
+
+			if (brk) break;
 
 		}
 

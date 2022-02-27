@@ -41,7 +41,7 @@ namespace cvp {
 
 		int GetSliderValue(int num);
 
-		void MainLoop(FrameCallback framecb, void* data = 0);
+		void MainLoop(FrameCallback framecb, void* data = 0, KeyCallBack keycb = nullptr);
 
 	};
 
