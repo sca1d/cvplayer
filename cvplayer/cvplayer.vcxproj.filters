@@ -26,9 +26,6 @@
     <ClInclude Include="include\deflate.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\tools.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\defstrct.h">
       <Filter>Header</Filter>
     </ClInclude>

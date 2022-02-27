@@ -173,7 +173,6 @@
     <ClInclude Include="include\cvplayer.h" />
     <ClInclude Include="include\deflate.h" />
     <ClInclude Include="include\defstrct.h" />
-    <ClInclude Include="include\tools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
