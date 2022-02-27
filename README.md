@@ -1,1 +1,1 @@
-# quick tester of opencv programs
+# quick tester for opencv programs
