@@ -1,5 +1,7 @@
 ﻿#include "cvplayer.h"
 
+#define IMG	"F:\\SS\\画像148.jpg"
+
 using namespace cvp;
 
 void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
@@ -18,7 +20,7 @@ void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
 
 int main(void) {
 
-	cvplayer player("F:\\SS\\画像148.jpg");
+	cvplayer player(IMG);
 	player.AddSlider({ "slider1", 10, 100 });
 	player.MainLoop(frameCallBack);
 
