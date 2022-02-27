@@ -17,73 +17,22 @@ namespace cvp {
 		int vals_count = 0;
 		int vals[CVP_MAX_TRACKBAR];
 
+		void InitVals(void);
 		void MatCheck(Mat* _src);
 
 		static void TrackbarEvent(int val, void* userdata);
 
 	public:
 
-		cvplayer(void) {
-			cv::namedWindow(aft_win_text);
-		}
-		cvplayer(const char* filepath) {
+		cvplayer(void);
+		cvplayer(const char* filepath);
+		cvplayer(Mat* _src);
 
-			src = imread(filepath);
-			MatCheck(&src);
-			cv::namedWindow(aft_win_text);
+		void AddSlider(sliderdata data);
 
-		}
-		cvplayer(Mat* _src) {
+		int GetSliderValue(int num);
 
-			MatCheck(_src);
-			src = _src->clone();
-			cv::namedWindow(aft_win_text);
-
-		}
-
-		void AddSlider(sliderdata data) {
-
-			if (vals_count == CVP_MAX_TRACKBAR - 1) {
-				printf("trackbar is max over.\n");
-				return;
-			}
-
-			vals[vals_count] = data.def;
-			createTrackbar(data.name, aft_win_text, &(vals[vals_count]), data.max, TrackbarEvent, (void*)(&vals[vals_count]));
-			vals_count++;
-
-		}
-
-		int GetSliderValue(int num) {
-
-			if (vals_count < num || CVP_MAX_TRACKBAR <= num) return 0;
-			return vals[num];
-
-		}
-
-		void MainLoop(FrameCallback framecb, void* data = 0) {
-
-			MatCheck(&src);
-
-			dst = src.clone();
-
-			imshow(bef_win_text, src);
-			namedWindow(aft_win_text);
-
-			while (1) {
-
-				framecb(src, &dst, (void*)this, data);
-				imshow(aft_win_text, dst);
-
-				if (waitKey(30) == 27) break;
-
-			}
-
-			src.release();
-			dst.release();
-			destroyAllWindows();
-
-		}
+		void MainLoop(FrameCallback framecb, void* data = 0);
 
 	};
 

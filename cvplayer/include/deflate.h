@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
 
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
