@@ -20,9 +20,20 @@ namespace cvp {
 
 	}
 
-	void cvplayer::TrackbarEvent(int val, void* userdata)
-	{
-		*(int*)(userdata) = val;
+	void cvplayer::TrackbarEvent(int val, void* userdata) {
+		eventdata* edata = reinterpret_cast<eventdata*>(userdata);
+		*edata->val = val;
+		*edata->update = 1;
+		//*(int*)(userdata) = val;
+	}
+
+	void cvplayer::MouseEvent(int e, int x, int y, int flag, void* userdata) {
+
+		if (e == EVENT_LBUTTONDOWN) {
+			*reinterpret_cast<eventdata*>(userdata)->play = *reinterpret_cast<eventdata*>(userdata)->play > 0 ? 0 : 1;
+			//*(int*)(userdata) = (*(int*)(userdata)) > 0 ? 0 : 1;
+		}
+
 	}
 
 	cvplayer::cvplayer(void) {
@@ -54,7 +65,7 @@ namespace cvp {
 		}
 
 		vals[vals_count] = data.def;
-		createTrackbar(data.name, aft_win_text, &(vals[vals_count]), data.max, TrackbarEvent, (void*)(&vals[vals_count]));
+		createTrackbar(data.name, aft_win_text, &(vals[vals_count]), data.max, TrackbarEvent, (void*)(&edata));
 		vals_count++;
 
 	}
@@ -74,11 +85,16 @@ namespace cvp {
 
 		imshow(bef_win_text, src);
 		namedWindow(aft_win_text);
+		setMouseCallback(aft_win_text, MouseEvent, (void*)(&edata));
 
 		while (1) {
 
-			framecb(src, &dst, (void*)this, data);
-			imshow(aft_win_text, dst);
+			if (play || update) {
+				framecb(src, &dst, (void*)this, data);
+				imshow(aft_win_text, dst);
+			}
+
+			update > 0 ? update = 0 : 0 ;
 
 			if (waitKey(30) == 27) break;
 

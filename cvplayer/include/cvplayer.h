@@ -17,10 +17,19 @@ namespace cvp {
 		int vals_count = 0;
 		int vals[CVP_MAX_TRACKBAR];
 
+		/*
+		* TRUE	= 1
+		* FALSE	= 0
+		*/
+		int play = 1, update = 0;
+
+		eventdata edata = { &vals[vals_count], &play, &update };
+
 		void InitVals(void);
 		void MatCheck(Mat* _src);
 
 		static void TrackbarEvent(int val, void* userdata);
+		static void MouseEvent(int e, int x, int y, int flag, void* userdata);
 
 	public:
 
