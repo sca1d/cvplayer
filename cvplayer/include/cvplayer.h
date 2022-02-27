@@ -8,6 +8,7 @@ namespace cvp {
 	class cvplayer {
 
 	protected:
+
 		Mat	src, dst;
 
 		String	bef_win_text = "no encode.",
@@ -16,19 +17,9 @@ namespace cvp {
 		int vals_count = 0;
 		int vals[CVP_MAX_TRACKBAR];
 
-		void MatCheck(Mat* _src) {
+		void MatCheck(Mat* _src);
 
-			if (_src->empty()) {
-				printf("mat is null.\n");
-				throw;
-			}
-
-		}
-
-		static void TrackbarEvent(int val, void* userdata)
-		{
-			*(int*)(userdata) = val;
-		}
+		static void TrackbarEvent(int val, void* userdata);
 
 	public:
 
