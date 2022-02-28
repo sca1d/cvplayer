@@ -15,7 +15,7 @@ namespace cvp {
 				aft_win_text = "encoded.";
 
 		int vals_count = 0;
-		int vals[CVP_MAX_TRACKBAR];
+		slidervals vals[CVP_MAX_TRACKBAR];
 
 		/*
 		* TRUE	= 1
@@ -23,7 +23,7 @@ namespace cvp {
 		*/
 		int play = 1, update = 0;
 
-		eventdata edata = { &vals[vals_count], &play, &update };
+		eventdata edata = { &vals[vals_count].value, &play, &update };
 
 		void InitVals(void);
 		void MatCheck(Mat* _src);
@@ -40,6 +40,8 @@ namespace cvp {
 		void AddSlider(sliderdata data);
 
 		int GetSliderValue(int num);
+
+		bool Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength);
 
 		void MainLoop(FrameCallback framecb, void* data = 0, KeyCallBack keycb = nullptr);
 

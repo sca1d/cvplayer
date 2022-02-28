@@ -9,6 +9,18 @@ namespace cvp {
 	typedef void (*KeyCallBack)(int keycode);
 	typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
 
+	typedef struct _effectFunc {
+	
+		FrameCallback callBack;
+		void* data;
+
+		_effectFunc(FrameCallback cb, void* d = nullptr) {
+			callBack = cb;
+			data = d;
+		}
+
+	}effectFunc;
+
 	typedef struct _eventdata {
 
 		int* val;
@@ -17,12 +29,34 @@ namespace cvp {
 
 	}eventdata;
 
-	typedef struct _sliderdata{
+	typedef struct _sliderdata {
 
 		String	name;
 		int		def;
 		int		max;
 
 	}sliderdata;
+
+	typedef struct _slidervals {
+
+		int value;
+		int def;
+		int max;
+
+	}slidervals;
+
+	typedef struct _keydomain {
+
+		int start;
+		int end;
+
+	}keydomain;
+
+	enum {
+
+		ENC_MP4 = 0,
+		ENC_GIF,
+
+	};
 
 }

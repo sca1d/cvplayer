@@ -6,7 +6,9 @@ namespace cvp {
 
 		#pragma omp parallel for
 		for (int i = 0; i < CVP_MAX_TRACKBAR; i++) {
-			vals[i] = 0;
+			vals[i].value	= 0;
+			vals[i].def		= 0;
+			vals[i].max		= 0;
 		}
 
 	}
@@ -64,8 +66,9 @@ namespace cvp {
 			return;
 		}
 
-		vals[vals_count] = data.def;
-		createTrackbar(data.name, aft_win_text, &(vals[vals_count]), data.max, TrackbarEvent, (void*)(&edata));
+		vals[vals_count].value	= data.def;
+		vals[vals_count].def	= data.def;
+		createTrackbar(data.name, aft_win_text, &(vals[vals_count].value), data.max, TrackbarEvent, (void*)(&edata));
 		vals_count++;
 
 	}
@@ -73,7 +76,40 @@ namespace cvp {
 	int cvplayer::GetSliderValue(int num) {
 
 		if (vals_count < num || CVP_MAX_TRACKBAR <= num) return 0;
-		return vals[num];
+		return vals[num].value;
+
+	}
+
+	bool cvplayer::Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength) {
+		
+		dst = src.clone();
+
+		if (type == ENC_MP4) {
+
+			int forcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
+
+			int width	= dst.cols;
+			int height	= dst.rows;
+
+			cv::VideoWriter output(filename, forcc, fps, cv::Size(width, height), dst.channels() > 1 ? true : false);
+
+			//#pragma omp parallel for
+			for (int f = 0; f < frameLength; f++) {
+
+				#pragma omp parallel for
+				for (int i = 0; i < vals_count; i++) {
+					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start)*(1/(frameLength/f))+valueKey[i].start) : valueKey[i].start;
+				}
+
+				effect.callBack(src, &dst, (void*)this, effect.data);
+
+				output << dst;
+
+			}
+
+			return output.isOpened();
+
+		}
 
 	}
 
