@@ -82,24 +82,33 @@ namespace cvp {
 
 	bool cvplayer::Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength) {
 		
-		dst = src.clone();
 		namedWindow(aft_win_text);
 
-		int width	= dst.cols,
-			height	= dst.rows,
-			color	= dst.channels();
+		int width	= src.cols,
+			height	= src.rows,
+			color	= src.channels();
 
 		if (type == ENC_MOV || type == ENC_AVI) {
 
 			int fourcc;
-			if (type == ENC_MOV) fourcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
-			if (type == ENC_AVI) fourcc = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+			switch (type) {
 
-			cv::VideoWriter output(filename, fourcc, fps, cv::Size(width, height), dst.channels() > 1 ? true : false);
+			case ENC_MOV:
+				fourcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
+				break;
 
-			//#pragma omp parallel for
+			case ENC_AVI:
+				fourcc = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+				break;
+
+			}
+
+			cv::VideoWriter output(filename, fourcc, fps, cv::Size(width, height), src.channels() > 1 ? true : false);
+
 			for (int f = 0; f < frameLength; f++) {
+
 				dst = src.clone();
+
 				#pragma omp parallel for
 				for (int i = 0; i < vals_count; i++) {
 					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start) * (1.0 / ((double)frameLength / (double)f)) + valueKey[i].start) : valueKey[i].start;
@@ -110,6 +119,11 @@ namespace cvp {
 
 				output << dst;
 
+			}
+
+			#pragma omp parallel for
+			for (int i = 0; i < vals_count; i++) {
+				vals[i].value = vals[i].def;
 			}
 
 			return output.isOpened();

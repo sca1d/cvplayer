@@ -54,8 +54,8 @@ namespace cvp {
 
 	enum {
 
-		ENC_MOV = 0,
-		ENC_AVI,
+		ENC_AVI = 0,
+		ENC_MOV,
 		ENC_GIF,
 
 	};
