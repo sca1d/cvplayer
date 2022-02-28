@@ -115,10 +115,35 @@ namespace cvp {
 				}
 
 				effect.callBack(src, &dst, this, effect.data);
-				imshow(enc_win_text, dst);
-
 				output << dst;
 
+				imshow(enc_win_text, dst);
+
+				int keycode = waitKey(30);
+
+				switch (keycode) {
+
+				case 27:
+				case 'q':
+
+					int isStop = MessageBox(
+						NULL,
+						L"Cancel the encoding ?",
+						L"cvplayer",
+						MB_YESNO | MB_ICONQUESTION
+					);
+
+					if (isStop == IDYES) {
+
+						destroyWindow(enc_win_text);
+						output.release();
+						remove(filename.c_str());
+
+						return -1;
+					}
+					else break;
+
+				}
 			}
 
 			#pragma omp parallel for
