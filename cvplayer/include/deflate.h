@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <omp.h>
+#include <Windows.h>
 
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
@@ -16,7 +17,6 @@
 
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "vfw32.lib")
-#pragma comment(lib, "imgctl.lib")
 
 #define DLL_EXPORT	__declspec(dllexport)
 

@@ -83,33 +83,67 @@ namespace cvp {
 	bool cvplayer::Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength) {
 		
 		dst = src.clone();
+		namedWindow(aft_win_text);
+
+		int width	= dst.cols,
+			height	= dst.rows,
+			color	= dst.channels();
 
 		if (type == ENC_MOV || type == ENC_AVI) {
 
-			int forcc;
-			if (type == ENC_MOV) forcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
-			if (type == ENC_AVI) forcc = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
+			int fourcc;
+			if (type == ENC_MOV) fourcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
+			if (type == ENC_AVI) fourcc = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
 
-			int width	= dst.cols;
-			int height	= dst.rows;
-
-			cv::VideoWriter output(filename, forcc, fps, cv::Size(width, height), dst.channels() > 1 ? true : false);
+			cv::VideoWriter output(filename, fourcc, fps, cv::Size(width, height), dst.channels() > 1 ? true : false);
 
 			//#pragma omp parallel for
 			for (int f = 0; f < frameLength; f++) {
-
+				dst = src.clone();
 				#pragma omp parallel for
 				for (int i = 0; i < vals_count; i++) {
-					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start)*(1/(frameLength/f))+valueKey[i].start) : valueKey[i].start;
+					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start) * (1.0 / ((double)frameLength / (double)f)) + valueKey[i].start) : valueKey[i].start;
 				}
 
-				effect.callBack(src, &dst, (void*)this, effect.data);
+				effect.callBack(src, &dst, this, effect.data);
+				imshow(aft_win_text, dst);
 
 				output << dst;
 
 			}
 
 			return output.isOpened();
+
+		}
+		else if (type == ENC_GIF) {
+
+			BITMAPINFO bitInfo;
+			bitInfo.bmiHeader.biBitCount		= color * 8;
+			bitInfo.bmiHeader.biWidth			= width;
+			bitInfo.bmiHeader.biWidth			= -height;
+			bitInfo.bmiHeader.biPlanes			= 1;
+			bitInfo.bmiHeader.biSize			= sizeof(BITMAPINFOHEADER);
+			bitInfo.bmiHeader.biCompression		= BI_RGB;
+			bitInfo.bmiHeader.biClrImportant	= 0;
+			bitInfo.bmiHeader.biClrUsed			= 0;
+			bitInfo.bmiHeader.biSizeImage		= 0;
+			bitInfo.bmiHeader.biXPelsPerMeter	= 0;
+			bitInfo.bmiHeader.biYPelsPerMeter	= 0;
+
+			LPDWORD lpPixel;
+			lpPixel = (LPDWORD)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, width * height * color);
+
+			for (int f = 0; f < frameLength; f++) {
+
+				for (int y = 0; y < height; y++) {
+					for (int x = 0; x < width; x++) {
+
+						lpPixel[x + y * width] = dst.data[y * width + x * dst.elemSize()];
+
+					}
+				}
+
+			}
 
 		}
 
@@ -130,7 +164,7 @@ namespace cvp {
 		while (1) {
 
 			if (play || update) {
-				framecb(src, &dst, (void*)this, data);
+				framecb(src, &dst, this, data);
 				imshow(aft_win_text, dst);
 			}
 
