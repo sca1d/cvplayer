@@ -84,9 +84,11 @@ namespace cvp {
 		
 		dst = src.clone();
 
-		if (type == ENC_MP4) {
+		if (type == ENC_MOV || type == ENC_AVI) {
 
-			int forcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
+			int forcc;
+			if (type == ENC_MOV) forcc = cv::VideoWriter::fourcc('M', 'P', '4', 'V');
+			if (type == ENC_AVI) forcc = cv::VideoWriter::fourcc('M', 'J', 'P', 'G');
 
 			int width	= dst.cols;
 			int height	= dst.rows;

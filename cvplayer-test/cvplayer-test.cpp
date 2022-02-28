@@ -30,7 +30,7 @@ int main(void) {
 
 	keydomain kd[1] = { { 5, 90 } };
 
-	int ret = player.Encode((frameCallBack), "video.mov", ENC_MP4, kd, 30.0, 30 * 10);
+	int ret = player.Encode((frameCallBack), "video.mov", ENC_MOV, kd, 30.0, 30 * 10);
 	printf("ret:%d\n", ret);
 
 	player.MainLoop(frameCallBack);

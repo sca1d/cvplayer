@@ -12,8 +12,11 @@
 
 #include "opencv2/core/cuda.hpp"
 
-#pragma comment(lib,"comctl32.lib")
-#pragma comment(lib,"vfw32.lib")
+#include "..\imgctl\imgctl.h"
+
+#pragma comment(lib, "comctl32.lib")
+#pragma comment(lib, "vfw32.lib")
+#pragma comment(lib, "imgctl.lib")
 
 #define DLL_EXPORT	__declspec(dllexport)
 
