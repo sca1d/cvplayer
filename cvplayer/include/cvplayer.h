@@ -29,6 +29,8 @@ namespace cvp {
 		void InitVals(void);
 		void MatCheck(Mat* _src);
 
+		void EncodingLog(int now, int length);
+
 		static void TrackbarEvent(int val, void* userdata);
 		static void MouseEvent(int e, int x, int y, int flag, void* userdata);
 

@@ -1,5 +1,14 @@
 #include "../include/cvplayer.h"
 
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
+#include <libavutil/imgutils.h>
+#include <libavutil/pixdesc.h>
+#include <libswscale/swscale.h>
+}
+
 namespace cvp {
 
 	void cvplayer::InitVals(void) {
@@ -19,6 +28,22 @@ namespace cvp {
 			printf("mat is null.\n");
 			throw;
 		}
+
+	}
+
+	void cvplayer::EncodingLog(int now, int length) {
+
+		char text[32];
+		sprintf_s(text, 32, "encoding : %df / %df", now, length);
+		cv::putText(
+			dst,
+			text,
+			cv::Point(30, 30),
+			cv::FONT_HERSHEY_PLAIN,
+			1.0,
+			cv::Scalar(0, 0, 255),
+			1
+		);
 
 	}
 
@@ -105,7 +130,7 @@ namespace cvp {
 
 			cv::VideoWriter output(filename, fourcc, fps, cv::Size(width, height), src.channels() > 1 ? true : false);
 
-			for (int f = 0; f < frameLength; f++) {
+			for (int f = 0; f <= frameLength; f++) {
 
 				dst = src.clone();
 
@@ -117,9 +142,11 @@ namespace cvp {
 				effect.callBack(src, &dst, this, effect.data);
 				output << dst;
 
+				EncodingLog(f, frameLength);
+
 				imshow(enc_win_text, dst);
 
-				int keycode = waitKey(30);
+				int keycode = waitKey(1);
 
 				switch (keycode) {
 
@@ -162,33 +189,87 @@ namespace cvp {
 		}
 		else if (type == ENC_GIF) {
 
-			BITMAPINFO bitInfo;
-			bitInfo.bmiHeader.biBitCount		= color * 8;
-			bitInfo.bmiHeader.biWidth			= width;
-			bitInfo.bmiHeader.biWidth			= -height;
-			bitInfo.bmiHeader.biPlanes			= 1;
-			bitInfo.bmiHeader.biSize			= sizeof(BITMAPINFOHEADER);
-			bitInfo.bmiHeader.biCompression		= BI_RGB;
-			bitInfo.bmiHeader.biClrImportant	= 0;
-			bitInfo.bmiHeader.biClrUsed			= 0;
-			bitInfo.bmiHeader.biSizeImage		= 0;
-			bitInfo.bmiHeader.biXPelsPerMeter	= 0;
-			bitInfo.bmiHeader.biYPelsPerMeter	= 0;
+			AVFormatContext* format_context = nullptr;
+			if (avformat_alloc_output_context2(&format_context, nullptr, "mp4", nullptr) < 0) printf("avformat_alloc_output2 failed\n");
 
-			LPDWORD lpPixel;
-			lpPixel = (LPDWORD)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, width * height * color);
+			AVFrame** frames = new AVFrame * [frameLength];
+			AVRational time_base{ frameLength, fps };
+
+			AVIOContext* io_context = nullptr;
+			if (avio_open(&io_context, filename.c_str(), AVIO_FLAG_WRITE) < 0) printf("avio_open failed\n");
+
+			format_context->pb = io_context;
+
+			const AVCodec* codec = avcodec_find_encoder(AV_CODEC_ID_H264);
+			if (codec == nullptr) printf("encoder not found ...\n");
+
+			AVCodecContext* codec_context = avcodec_alloc_context3(codec);
+			if (codec_context == nullptr) printf("avcodec_alloc_context3 failed\n");
 
 			for (int f = 0; f < frameLength; f++) {
 
-				for (int y = 0; y < height; y++) {
-					for (int x = 0; x < width; x++) {
+				dst = src.clone();
 
-						lpPixel[x + y * width] = dst.data[y * width + x * dst.elemSize()];
-
-					}
+				#pragma omp parallel for
+				for (int i = 0; i < vals_count; i++) {
+					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start) * (1.0 / ((double)frameLength / (double)f)) + valueKey[i].start) : valueKey[i].start;
 				}
 
+				effect.callBack(src, &dst, this, effect.data);
+
+				AVFrame* frame = av_frame_alloc();
+
+				int cvLinesizes[1];
+				cvLinesizes[0] = dst.step1();
+
+				av_image_alloc(frame->data, frame->linesize, width, height,
+					AVPixelFormat::AV_PIX_FMT_YUV420P, 1);
+
+				SwsContext* conversion = sws_getContext(
+					width, height, AVPixelFormat::AV_PIX_FMT_BGR24, width, height,
+					(AVPixelFormat)frame->format, SWS_FAST_BILINEAR, NULL, NULL, NULL);
+				sws_scale(conversion, &dst.data, cvLinesizes, 0, height, frame->data, frame->linesize);
+				sws_freeContext(conversion);
+
+				frames[f] = frame;
+
 			}
+
+			// set picture properties
+			AVFrame* first_frame = frames[0];
+			codec_context->pix_fmt = (AVPixelFormat)first_frame->format;
+			codec_context->width = first_frame->width;
+			codec_context->height = first_frame->height;
+			codec_context->field_order = AV_FIELD_PROGRESSIVE;
+			codec_context->color_range = first_frame->color_range;
+			codec_context->color_primaries = first_frame->color_primaries;
+			codec_context->color_trc = first_frame->color_trc;
+			codec_context->colorspace = first_frame->colorspace;
+			codec_context->chroma_sample_location = first_frame->chroma_location;
+			codec_context->sample_aspect_ratio = first_frame->sample_aspect_ratio;
+
+			codec_context->time_base = time_base;
+
+			if (format_context->oformat->flags & AVFMT_GLOBALHEADER) {
+				codec_context->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+			}
+
+			AVDictionary* codec_options = nullptr;
+			av_dict_set(&codec_options, "preset", "medium", 0);
+			av_dict_set(&codec_options, "crf", "22", 0);
+			av_dict_set(&codec_options, "profile", "high", 0);
+			av_dict_set(&codec_options, "level", "4.0", 0);
+
+			if (avcodec_open2(codec_context, codec_context->codec, &codec_options) != 0) printf("avcodec_open2 failed\n");
+
+			AVStream* stream = avformat_new_stream(format_context, codec);
+			if (stream == NULL)printf("avformat_new_stream failed\n");
+
+			stream->sample_aspect_ratio = codec_context->sample_aspect_ratio;
+			stream->time_base = codec_context->time_base;
+			if (avcodec_parameters_from_context(stream->codecpar, codec_context) < 0) printf("avcodec_parameters_from_context failed\n");
+
+			if (avformat_write_header(format_context, nullptr) < 0) printf("avformat_write_header failed\n");
 
 		}
 
