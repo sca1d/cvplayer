@@ -12,7 +12,8 @@ namespace cvp {
 		Mat	src, dst;
 
 		String	bef_win_text = "no encode.",
-				aft_win_text = "encoded.";
+				aft_win_text = "encoded.",
+				enc_win_text = "encoding now...";
 
 		int vals_count = 0;
 		slidervals vals[CVP_MAX_TRACKBAR];

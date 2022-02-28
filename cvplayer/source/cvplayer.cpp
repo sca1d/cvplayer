@@ -82,7 +82,7 @@ namespace cvp {
 
 	bool cvplayer::Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength) {
 		
-		namedWindow(aft_win_text);
+		namedWindow(enc_win_text);
 
 		int width	= src.cols,
 			height	= src.rows,
@@ -115,7 +115,7 @@ namespace cvp {
 				}
 
 				effect.callBack(src, &dst, this, effect.data);
-				imshow(aft_win_text, dst);
+				imshow(enc_win_text, dst);
 
 				output << dst;
 
@@ -126,7 +126,13 @@ namespace cvp {
 				vals[i].value = vals[i].def;
 			}
 
-			return output.isOpened();
+			MessageBox(NULL, L"finished encode!", L"cvplayer", NULL);
+			destroyWindow(enc_win_text);
+
+			bool ret = output.isOpened();
+			output.release();
+
+			return ret;
 
 		}
 		else if (type == ENC_GIF) {
