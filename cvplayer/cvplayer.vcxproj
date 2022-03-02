@@ -106,10 +106,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)cvplayer\ffmpeg\include\;F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalUsingDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,18 +118,12 @@
       <AdditionalDependencies>opencv_world455.lib;opencv_world455d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>imgctl.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imgctl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreLinkEvent>
-      <Command>copy "$(SolutionDir)cvplayer\ffmpeg\lib\avcodec-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avdevice-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avfilter-8.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avformat-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avutil-57.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\postproc-56.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swresample-4.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,10 +134,10 @@ copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)cvplayer\ffmpeg\include\;F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalUsingDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,18 +148,12 @@ copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
       <AdditionalDependencies>opencv_world455.lib;opencv_world455d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>imgctl.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imgctl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreLinkEvent>
-      <Command>copy "$(SolutionDir)cvplayer\ffmpeg\lib\avcodec-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avdevice-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avfilter-8.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avformat-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avutil-57.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\postproc-56.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swresample-4.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -174,10 +162,10 @@ copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)cvplayer\ffmpeg\include\;F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalUsingDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -186,18 +174,12 @@ copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
       <AdditionalDependencies>opencv_world455.lib;opencv_world455d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>imgctl.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imgctl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreLinkEvent>
-      <Command>copy "$(SolutionDir)cvplayer\ffmpeg\lib\avcodec-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avdevice-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avfilter-8.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avformat-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avutil-57.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\postproc-56.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swresample-4.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -208,10 +190,10 @@ copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)cvplayer\ffmpeg\include\;F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\opencv\opencv-4.5.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalUsingDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -222,18 +204,12 @@ copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
       <AdditionalDependencies>opencv_world455.lib;opencv_world455d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\ffmpeg\lib\;$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>imgctl.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)cvplayer\imgctl\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imgctl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PreLinkEvent>
-      <Command>copy "$(SolutionDir)cvplayer\ffmpeg\lib\avcodec-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avdevice-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avfilter-8.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avformat-59.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\avutil-57.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\postproc-56.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swresample-4.dll" "$(TargetDir)"
-copy "$(SolutionDir)cvplayer\ffmpeg\lib\swscale-6.dll" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

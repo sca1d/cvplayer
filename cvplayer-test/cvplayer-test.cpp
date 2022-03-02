@@ -6,6 +6,24 @@
 
 using namespace cvp;
 
+void frameCallBack(Mat src, Mat* dst, void* player, void* data);
+
+void keyCallBack(int keycode, void* _player) {
+
+	cvplayer* player = reinterpret_cast<cvplayer*>(_player);
+
+	switch (keycode) {
+
+	case 'r':
+		keydomain kd[1] = { { 5, 90 } };
+
+		int ret = player->Encode((frameCallBack), "video.mov", ENC_MOV, kd, 30.0, 30 * 5);
+		printf("ret:%d\n", ret);
+
+	}
+
+}
+
 void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
 
 	int xx, yy;
@@ -35,12 +53,7 @@ int main(void) {
 	cvplayer player(IMG);
 	player.AddSlider({ "slider1", 10, 100 });
 
-	keydomain kd[1] = { { 5, 90 } };
-
-	int ret = player.Encode((frameCallBack), "video.mov", ENC_MOV, kd, 30.0, 30 * 5);
-	printf("ret:%d\n", ret);
-
-	player.MainLoop(frameCallBack);
+	player.MainLoop(frameCallBack, keyCallBack);
 
 	return 0;
 
