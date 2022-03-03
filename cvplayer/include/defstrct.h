@@ -32,18 +32,21 @@ namespace cvp {
 	typedef struct _sliderdata {
 
 		String	name;
+		int		value;
 		int		def;
 		int		max;
 
+		_sliderdata(void) {
+
+		}
+		_sliderdata(String _name, int _def, int _max) {
+			name	= _name;
+			value	= _def;
+			def		= _def;
+			max		= _max;
+		}
+
 	}sliderdata;
-
-	typedef struct _slidervals {
-
-		int value;
-		int def;
-		int max;
-
-	}slidervals;
 
 	typedef struct _keydomain {
 

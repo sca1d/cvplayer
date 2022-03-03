@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include <omp.h>
+#include <ppl.h>
 #include <Windows.h>
 
 #include "opencv2/opencv.hpp"

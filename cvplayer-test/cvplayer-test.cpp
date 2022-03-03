@@ -1,6 +1,4 @@
-﻿#include <ppl.h>
-
-#include "cvplayer.h"
+﻿#include "cvplayer.h"
 
 #define IMG	"F:\\SS\\画像148.jpg"
 
@@ -49,9 +47,10 @@ void keyCallBack(int keycode, void* _player) {
 int main(void) {
 
 	cvplayer player(IMG);
-	player.AddSlider({ "slider1", 10, 100 });
+	player.AddKeyEvent(keyCallBack);
+	player.AddSlider(sliderdata("slider1", 10, 100));
 
-	player.MainLoop(frameCallBack, 0, keyCallBack);
+	player.MainLoop(frameCallBack, 0);
 
 	return 0;
 

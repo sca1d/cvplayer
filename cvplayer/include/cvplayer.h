@@ -15,8 +15,10 @@ namespace cvp {
 				aft_win_text = "encoded.",
 				enc_win_text = "encoding now...";
 
+		KeyCallBack keyCallBack = nullptr;
+
 		int vals_count = 0;
-		slidervals vals[CVP_MAX_TRACKBAR];
+		sliderdata vals[CVP_MAX_TRACKBAR];
 
 		/*
 		* TRUE	= 1
@@ -24,11 +26,15 @@ namespace cvp {
 		*/
 		int play = 1, update = 0;
 
+		bool nowEncode = false;
+
 		eventdata edata = { &vals[vals_count].value, &play, &update };
 
 		void InitVals(void);
 		void MatCheck(Mat* _src);
+		int WaitFunc(int time);
 
+		void PlayModeLog(void);
 		void EncodingLog(int now, int length);
 
 		static void TrackbarEvent(int val, void* userdata);
@@ -40,13 +46,15 @@ namespace cvp {
 		cvplayer(const char* filepath);
 		cvplayer(Mat* _src);
 
-		void AddSlider(sliderdata data);
+		void AddKeyEvent(KeyCallBack keycb);
 
+		void AddSlider(sliderdata data);
 		int GetSliderValue(int num);
+		int GetSliderValue(char* name);
 
 		bool Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength);
 
-		void MainLoop(FrameCallback framecb, void* data = 0, KeyCallBack keycb = nullptr);
+		void MainLoop(FrameCallback framecb, void* data = 0);
 
 	};
 

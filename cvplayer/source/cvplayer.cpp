@@ -22,10 +22,58 @@ namespace cvp {
 
 	}
 
+	int cvplayer::WaitFunc(int time) {
+
+		int keycode = waitKey(time);
+
+		if (keyCallBack != nullptr) {
+			keyCallBack(keycode, this);
+		}
+
+		return keycode;
+
+	}
+
+	void cvplayer::PlayModeLog(void) {
+
+		if (play == 1) {
+			
+			const char* text = "Play";
+
+			cv::putText(
+				dst,
+				text,
+				cv::Point(10, 15),
+				cv::FONT_HERSHEY_PLAIN,
+				1.0,
+				cv::Scalar(0, 255, 0),
+				1
+			);
+
+		}
+		else {
+
+			const char* text = "Stop";
+
+			cv::putText(
+				dst,
+				text,
+				cv::Point(10, 15),
+				cv::FONT_HERSHEY_PLAIN,
+				1.0,
+				cv::Scalar(0, 0, 255),
+				1
+			);
+
+		}
+
+	}
+
 	void cvplayer::EncodingLog(int now, int length) {
 
 		char text[32];
 		sprintf_s(text, 32, "encoding : %df / %df", now, length);
+
 		cv::putText(
 			dst,
 			text,
@@ -48,8 +96,9 @@ namespace cvp {
 	void cvplayer::MouseEvent(int e, int x, int y, int flag, void* userdata) {
 
 		if (e == EVENT_LBUTTONDOWN) {
-			*reinterpret_cast<eventdata*>(userdata)->play = *reinterpret_cast<eventdata*>(userdata)->play > 0 ? 0 : 1;
-			//*(int*)(userdata) = (*(int*)(userdata)) > 0 ? 0 : 1;
+			eventdata* data = reinterpret_cast<eventdata*>(userdata);
+			*data->play = *data->play > 0 ? 0 : 1;
+			*data->update = 1;
 		}
 
 	}
@@ -75,6 +124,14 @@ namespace cvp {
 
 	}
 
+	void cvplayer::AddKeyEvent(KeyCallBack keycb) {
+
+		if (keycb != nullptr) {
+			keyCallBack = keycb;
+		}
+
+	}
+
 	void cvplayer::AddSlider(sliderdata data) {
 
 		if (vals_count == CVP_MAX_TRACKBAR - 1) {
@@ -95,14 +152,42 @@ namespace cvp {
 		return vals[num].value;
 
 	}
+	int cvplayer::GetSliderValue(char* name) {
+
+		for (int i = 0; i < vals_count; i++) {
+			if (strcmp(vals[i].name.c_str(), name)) {
+				return vals[i].value;
+			}
+		}
+
+		return 0;
+
+	}
 
 	bool cvplayer::Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength) {
 		
+		if (nowEncode) {
+
+			int isStop = MessageBox(
+				NULL,
+				L"Cancel the encoding ?",
+				L"cvplayer",
+				MB_YESNO | MB_ICONQUESTION
+			);
+
+			if (isStop != IDYES) {
+				return -1;
+			}
+
+		}
+
 		namedWindow(enc_win_text);
 
 		int width	= src.cols,
 			height	= src.rows,
 			color	= src.channels();
+
+		nowEncode	= true;
 
 		if (type == ENC_MOV || type == ENC_AVI) {
 
@@ -137,9 +222,7 @@ namespace cvp {
 
 				imshow(enc_win_text, dst);
 
-				int keycode = waitKey(1);
-
-				switch (keycode) {
+				switch (WaitFunc(1)) {
 
 				case 27:
 				case 'q':
@@ -175,6 +258,8 @@ namespace cvp {
 			bool ret = output.isOpened();
 			output.release();
 
+			nowEncode = false;
+
 			return ret;
 
 		}
@@ -188,13 +273,11 @@ namespace cvp {
 
 	}
 
-	void cvplayer::MainLoop(FrameCallback framecb, void* data, KeyCallBack keycb) {
+	void cvplayer::MainLoop(FrameCallback framecb, void* data) {
 
 		int brk = 0;
 
 		MatCheck(&src);
-
-		dst = src.clone();
 
 		imshow(bef_win_text, src);
 		namedWindow(aft_win_text);
@@ -202,20 +285,21 @@ namespace cvp {
 
 		while (1) {
 
+			dst = src.clone();
+
 			if (play || update) {
+
 				framecb(src, &dst, this, data);
+
+				PlayModeLog();
+
 				imshow(aft_win_text, dst);
+			
 			}
 
-			update > 0 ? update = 0 : 0 ;
+			update > 0 ? update = 0 : 0;
 
-			int keycode = waitKey(30);
-
-			if (keycb != nullptr) {
-				keycb(keycode, this);
-			}
-
-			switch (keycode) {
+			switch (WaitFunc(30)) {
 
 			case 27:
 			case 'q':
