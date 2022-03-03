@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cvplayer", "cvplayer\cvplayer.vcxproj", "{1D143248-6CF3-495A-93FF-DF109AD6A50F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{FB103451-6333-4C93-8B53-28941245AF00}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cvplayer-test", "cvplayer-test\test.vcxproj", "{FB103451-6333-4C93-8B53-28941245AF00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

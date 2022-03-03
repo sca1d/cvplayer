@@ -15,22 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="include\cvplayer.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="include\deflate.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\tools.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="include\defstrct.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="source\tools.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\cvplayer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dllmain.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="source\tools.asm">
+      <Filter>Source</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

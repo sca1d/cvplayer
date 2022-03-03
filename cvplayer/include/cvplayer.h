@@ -8,156 +8,53 @@ namespace cvp {
 	class cvplayer {
 
 	protected:
+
 		Mat	src, dst;
 
 		String	bef_win_text = "no encode.",
-				aft_win_text = "encoded.";
+				aft_win_text = "encoded.",
+				enc_win_text = "encoding now...";
+
+		KeyCallBack keyCallBack = nullptr;
 
 		int vals_count = 0;
-		int vals[CVP_MAX_TRACKBAR];
+		sliderdata vals[CVP_MAX_TRACKBAR];
 
-		void MatCheck(Mat* _src) {
+		/*
+		* TRUE	= 1
+		* FALSE	= 0
+		*/
+		int play = 1, update = 0;
 
-			if (_src->empty()) {
-				printf("mat is null.\n");
-				throw;
-			}
+		bool nowEncode = false;
 
-		}
+		eventdata edata = { &vals[vals_count].value, &play, &update };
 
-		static void TrackbarEvent(int val, void* userdata)
-		{
-			*(int*)(userdata) = val;
-		}
+		void InitVals(void);
+		void MatCheck(Mat* _src);
+		int WaitFunc(int time);
 
-	public:
+		void PlayModeLog(void);
+		void EncodingLog(int now, int length);
 
-		cvplayer(void) {
-			cv::namedWindow(aft_win_text);
-		}
-		cvplayer(const char* filepath) {
-
-			src = imread(filepath);
-			MatCheck(&src);
-			cv::namedWindow(aft_win_text);
-
-		}
-		cvplayer(Mat* _src) {
-
-			MatCheck(_src);
-			src = _src->clone();
-			cv::namedWindow(aft_win_text);
-
-		}
-
-		void AddSlider(sliderdata data) {
-
-			if (vals_count == CVP_MAX_TRACKBAR - 1) {
-				printf("trackbar is max over.\n");
-				return;
-			}
-
-			vals[vals_count] = data.def;
-			createTrackbar(data.name, aft_win_text, &(vals[vals_count]), data.max, TrackbarEvent, (void*)(&vals[vals_count]));
-			vals_count++;
-
-		}
-
-		int GetSliderValue(int num) {
-
-			if (vals_count < num || CVP_MAX_TRACKBAR <= num) return 0;
-			return vals[num];
-
-		}
-
-		void MainLoop(FrameCallback framecb, void* data = 0) {
-
-			MatCheck(&src);
-
-			dst = src.clone();
-
-			imshow(bef_win_text, src);
-			namedWindow(aft_win_text);
-
-			while (1) {
-
-				framecb(src, &dst, (void*)this, data);
-				imshow(aft_win_text, dst);
-
-				if (waitKey(30) == 27) break;
-
-			}
-
-			src.release();
-			dst.release();
-			destroyAllWindows();
-
-		}
-
-	};
-
-	class cudacvplayer : cvplayer {
-
-	private:
-
-		cv::cuda::GpuMat src, dst;
-
-		void MatCheck(cv::cuda::GpuMat* _src) {
-
-			if (_src->empty()) {
-				printf("mat is null.\n");
-				throw;
-			}
-
-		}
+		static void TrackbarEvent(int val, void* userdata);
+		static void MouseEvent(int e, int x, int y, int flag, void* userdata);
 
 	public:
 
-		cudacvplayer(const char* filepath) {
+		cvplayer(void);
+		cvplayer(const char* filepath);
+		cvplayer(Mat* _src);
 
-			src.upload(imread(filepath));
-			MatCheck(&src);
-			cv::namedWindow(aft_win_text);
+		void AddKeyEvent(KeyCallBack keycb);
 
-		}
-		cudacvplayer(cv::Mat* _src) {
+		void AddSlider(sliderdata data);
+		int GetSliderValue(int num);
+		int GetSliderValue(char* name);
 
-			src.upload(*_src);
-			MatCheck(&src);
-			cv::namedWindow(aft_win_text);
+		bool Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength);
 
-		}
-		cudacvplayer(cv::cuda::GpuMat* _src) {
-
-			MatCheck(_src);
-			src = *_src;
-			cv::namedWindow(aft_win_text);
-
-		}
-
-		void MainLoop(CudaFrameCallback framecb, void* data = 0) {
-
-			MatCheck(&src);
-
-			dst = src.clone();
-
-			imshow(bef_win_text, src);
-			namedWindow(aft_win_text);
-
-			while (1) {
-
-				framecb(src, &dst, (void*)this, data);
-				imshow(aft_win_text, dst);
-
-				if (waitKey(30) == 27) break;
-
-			}
-
-			src.release();
-			dst.release();
-			destroyAllWindows();
-
-		}
+		void MainLoop(FrameCallback framecb, void* data = 0);
 
 	};
 
