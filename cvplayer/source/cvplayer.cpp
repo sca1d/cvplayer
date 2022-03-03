@@ -277,6 +277,8 @@ namespace cvp {
 
 		int brk = 0;
 
+		int time = 0;
+
 		MatCheck(&src);
 
 		imshow(bef_win_text, src);
@@ -294,6 +296,8 @@ namespace cvp {
 				PlayModeLog();
 
 				imshow(aft_win_text, dst);
+
+				if (play) time++;
 			
 			}
 
