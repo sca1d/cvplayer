@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cvplayer-test.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
