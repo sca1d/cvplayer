@@ -178,11 +178,13 @@ namespace cvp {
 			return ret;
 
 		}
+		/*
 		else if (type == ENC_GIF) {
 
 
 
 		}
+		*/
 
 	}
 

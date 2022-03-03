@@ -56,7 +56,7 @@ namespace cvp {
 
 		ENC_AVI = 0,
 		ENC_MOV,
-		ENC_GIF,
+		//ENC_GIF,
 
 	};
 
