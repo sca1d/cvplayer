@@ -1,6 +1,6 @@
 #include "cvplayer.h"
 
-#define IMG	"F:\\SS\\‰æ‘œ148.jpg"
+#include "effects.h"
 
 using namespace cvp;
 
@@ -42,12 +42,15 @@ void keyCallBack(int keycode, void* _player) {
 }
 
 int main(void) {
-
+	
+	/*
 	cvplayer player(IMG);
 	player.AddKeyEvent(keyCallBack);
 	player.AddSlider(sliderdata("slider1", 10, 100));
 
 	player.MainLoop(frameCallBack, 0);
+	*/
+	Binary();
 
 	return 0;
 

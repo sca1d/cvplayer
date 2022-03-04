@@ -36,6 +36,8 @@ namespace cvp {
 
 	void cvplayer::PlayModeLog(void) {
 
+		if (dst.channels() < 3) cv::cvtColor(dst, dst, cv::COLOR_GRAY2BGR);
+
 		if (play == 1) {
 			
 			const char* text = "Play";
@@ -70,6 +72,8 @@ namespace cvp {
 	}
 
 	void cvplayer::EncodingLog(int now, int length) {
+
+		if (dst.channels() < 3) cv::cvtColor(dst, dst, cv::COLOR_GRAY2BGR);
 
 		char text[32];
 		sprintf_s(text, 32, "encoding : %df / %df", now, length);
