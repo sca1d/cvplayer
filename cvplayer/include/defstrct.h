@@ -53,6 +53,11 @@ namespace cvp {
 		int start;
 		int end;
 
+		_keydomain(int _start, int _end) {
+			start	= _start;
+			end		= _end;
+		}
+
 	}keydomain;
 
 	enum {

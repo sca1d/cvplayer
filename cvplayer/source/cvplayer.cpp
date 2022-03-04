@@ -36,7 +36,7 @@ namespace cvp {
 
 	void cvplayer::PlayModeLog(void) {
 
-		if (dst.channels() < 3) cv::cvtColor(dst, dst, cv::COLOR_GRAY2BGR);
+		CVP_FIX_CHANNEL(dst);
 
 		if (play == 1) {
 			
@@ -73,7 +73,7 @@ namespace cvp {
 
 	void cvplayer::EncodingLog(int now, int length) {
 
-		if (dst.channels() < 3) cv::cvtColor(dst, dst, cv::COLOR_GRAY2BGR);
+		CVP_FIX_CHANNEL(dst);
 
 		char text[32];
 		sprintf_s(text, 32, "encoding : %df / %df", now, length);
@@ -222,6 +222,7 @@ namespace cvp {
 				}
 
 				effect.callBack(src, &dst, this, effect.data);
+				CVP_FIX_CHANNEL(dst);
 				output << dst;
 
 				EncodingLog(f, frameLength);

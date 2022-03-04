@@ -11,13 +11,30 @@ void Binary_effect(Mat src, Mat* dst, void* player, void* data) {
 
 }
 
+void Binary_keyCallBack(int keycode, void* _player) {
+
+	cvplayer* player = reinterpret_cast<cvplayer*>(_player);
+
+	switch (keycode) {
+
+	case 'r':
+		keydomain kd[1] = { keydomain( 0, 0xFF ) };
+
+		int ret = player->Encode((Binary_effect), "video.mov", ENC_MOV, kd, 30.0, 30 * 5);
+		printf("ret:%d\n", ret);
+
+	}
+
+}
+
 void Binary(void) {
 
 	cvplayer player(IMG);
 	Binary_valueNum = player.AddSlider(sliderdata("binary", 100, 0xFF));
 
-	//player.MainLoop(frameCallBack, 0);
-	player.MainLoop(Binary_effect, 0);
+	player.AddKeyEvent(Binary_keyCallBack);
+	
+	player.MainLoop(Binary_effect);
 
 	return;
 
