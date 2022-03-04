@@ -132,17 +132,19 @@ namespace cvp {
 
 	}
 
-	void cvplayer::AddSlider(sliderdata data) {
+	int cvplayer::AddSlider(sliderdata data) {
 
 		if (vals_count == CVP_MAX_TRACKBAR - 1) {
 			printf("trackbar is max over.\n");
-			return;
+			return -1;
 		}
 
 		vals[vals_count].value	= data.def;
 		vals[vals_count].def	= data.def;
 		createTrackbar(data.name, aft_win_text, &(vals[vals_count].value), data.max, TrackbarEvent, (void*)(&edata));
 		vals_count++;
+
+		return vals_count - 1;
 
 	}
 
