@@ -36,6 +36,8 @@ namespace cvp {
 
 	void cvplayer::PlayModeLog(void) {
 
+		CVP_FIX_CHANNEL(dst);
+
 		if (play == 1) {
 			
 			const char* text = "Play";
@@ -70,6 +72,8 @@ namespace cvp {
 	}
 
 	void cvplayer::EncodingLog(int now, int length) {
+
+		CVP_FIX_CHANNEL(dst);
 
 		char text[32];
 		sprintf_s(text, 32, "encoding : %df / %df", now, length);
@@ -132,17 +136,19 @@ namespace cvp {
 
 	}
 
-	void cvplayer::AddSlider(sliderdata data) {
+	int cvplayer::AddSlider(sliderdata data) {
 
 		if (vals_count == CVP_MAX_TRACKBAR - 1) {
 			printf("trackbar is max over.\n");
-			return;
+			return -1;
 		}
 
 		vals[vals_count].value	= data.def;
 		vals[vals_count].def	= data.def;
 		createTrackbar(data.name, aft_win_text, &(vals[vals_count].value), data.max, TrackbarEvent, (void*)(&edata));
 		vals_count++;
+
+		return vals_count - 1;
 
 	}
 
@@ -216,6 +222,7 @@ namespace cvp {
 				}
 
 				effect.callBack(src, &dst, this, effect.data);
+				CVP_FIX_CHANNEL(dst);
 				output << dst;
 
 				EncodingLog(f, frameLength);

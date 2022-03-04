@@ -1,5 +1,7 @@
 #pragma once
 
+#ifndef _INC_CVPLAYER
+
 #include "deflate.h"
 #include "defstrct.h"
 
@@ -48,7 +50,7 @@ namespace cvp {
 
 		void AddKeyEvent(KeyCallBack keycb);
 
-		void AddSlider(sliderdata data);
+		int AddSlider(sliderdata data);
 		int GetSliderValue(int num);
 		int GetSliderValue(char* name);
 
@@ -59,3 +61,6 @@ namespace cvp {
 	};
 
 }
+
+#define _INC_CVPLAYER
+#endif

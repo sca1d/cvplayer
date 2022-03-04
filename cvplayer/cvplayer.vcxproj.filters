@@ -32,9 +32,6 @@
     <ClCompile Include="source\cvplayer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="source\dllmain.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="source\tools.asm">
