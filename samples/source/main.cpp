@@ -50,7 +50,9 @@ int main(void) {
 
 	player.MainLoop(frameCallBack, 0);
 	*/
-	Binary();
+	
+	//Binary();
+	ColorBalance();
 
 	return 0;
 

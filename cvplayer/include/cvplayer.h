@@ -13,8 +13,8 @@ namespace cvp {
 
 		Mat	src, dst;
 
-		String	bef_win_text = "no encode.",
-				aft_win_text = "encoded.",
+		String	bef_win_text = "input ( src )",
+				aft_win_text = "output ( dst )",
 				enc_win_text = "encoding now...";
 
 		KeyCallBack keyCallBack = nullptr;
