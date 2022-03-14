@@ -5,7 +5,13 @@
 
 namespace cvp {
 
-	typedef void (*FrameCallback)(Mat src, Mat* dst, void* player, void* data);
+	typedef struct {
+		int current_frame;
+		void* player;
+		void* data;
+	}input_data;
+
+	typedef void (*FrameCallback)(Mat src, Mat* dst, input_data* input);
 	typedef void (*KeyCallBack)(int keycode, void* player);
 	typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
 
@@ -53,7 +59,7 @@ namespace cvp {
 		int start;
 		int end;
 
-		_keydomain(int _start, int _end) {
+		_keydomain(double _start, double _end) {
 			start	= _start;
 			end		= _end;
 		}

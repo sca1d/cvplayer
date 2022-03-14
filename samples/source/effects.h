@@ -11,8 +11,8 @@ using namespace cvp;
 
 void keyEvent(int keycode, void* _player);
 
-void ColorBalance_effect(Mat src, Mat* dst, void* player, void* data);
+void ColorBalance_effect(Mat src, Mat* dst, input_data* input);
 void ColorBalance(void);
 
-void Binary_effect(Mat src, Mat* dst, void* player, void* data);
+void Binary_effect(Mat src, Mat* dst, input_data* input);
 void Binary(void);

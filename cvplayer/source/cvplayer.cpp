@@ -211,6 +211,11 @@ namespace cvp {
 			}
 
 			cv::VideoWriter output(filename, fourcc, fps, cv::Size(width, height), src.channels() > 1 ? true : false);
+			
+			input_data input;
+			input.current_frame = 0;
+			input.player = this;
+			input.data = effect.data;
 
 			for (int f = 0; f <= frameLength; f++) {
 
@@ -221,7 +226,8 @@ namespace cvp {
 					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start) * (1.0 / ((double)frameLength / (double)f)) + valueKey[i].start) : valueKey[i].start;
 				}
 
-				effect.callBack(src, &dst, this, effect.data);
+				input.current_frame = f;
+				effect.callBack(src, &dst, &input);
 				CVP_FIX_CHANNEL(dst);
 				output << dst;
 
@@ -292,19 +298,27 @@ namespace cvp {
 		namedWindow(aft_win_text);
 		setMouseCallback(aft_win_text, MouseEvent, (void*)(&edata));
 
+		input_data input;
+		input.current_frame = time;
+		input.player = this;
+		input.data = data;
+
 		while (1) {
 
 			dst = src.clone();
 
 			if (play || update) {
 
-				framecb(src, &dst, this, data);
+				framecb(src, &dst, &input);
 
 				PlayModeLog();
 
 				imshow(aft_win_text, dst);
 
-				if (play) time++;
+				if (play) {
+					time++;
+					input.current_frame = time;
+				}
 			
 			}
 

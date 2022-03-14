@@ -19,9 +19,9 @@ void keyEvent(int keycode, void* _player) {
 
 }
 
-void ColorBalance_effect(Mat src, Mat* dst, void* player, void* data) {
+void ColorBalance_effect(Mat src, Mat* dst, input_data* input) {
 
-	cvplayer* p = reinterpret_cast<cvplayer*>(player);
+	cvplayer* p = reinterpret_cast<cvplayer*>(input->player);
 
 	cv::cvtColor(src, src, cv::COLOR_BGR2HSV);
 
@@ -62,9 +62,9 @@ void ColorBalance(void) {
 
 }
 
-void Binary_effect(Mat src, Mat* dst, void* player, void* data) {
+void Binary_effect(Mat src, Mat* dst, input_data* input) {
 
-	cvplayer* p = reinterpret_cast<cvplayer*>(player);
+	cvplayer* p = reinterpret_cast<cvplayer*>(input->player);
 
 	cv::cvtColor(src, src, cv::COLOR_BGR2GRAY);
 	cv::threshold(src, *dst, p->GetSliderValue(Binary_valueNum), 0xFF, cv::THRESH_BINARY);
