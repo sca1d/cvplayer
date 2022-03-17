@@ -32,13 +32,14 @@ namespace cvp {
 
 		eventdata edata = { &vals[vals_count].value, &play, &update };
 
-		void InitVals(void);
-		void MatCheck(Mat* _src);
+		inline void InitVals(void);
+		inline void MatCheck(Mat* _src);
 		int WaitFunc(int time);
 
 		void PlayModeLog(void);
 		void EncodingLog(int now, int length);
 
+		static void PlayReverse(eventdata* data);
 		static void TrackbarEvent(int val, void* userdata);
 		static void MouseEvent(int e, int x, int y, int flag, void* userdata);
 
@@ -54,9 +55,9 @@ namespace cvp {
 		int GetSliderValue(int num);
 		int GetSliderValue(char* name);
 
-		bool Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength);
+		bool Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength);
 
-		void MainLoop(FrameCallback framecb, void* data = 0);
+		void MainLoop(FrameCallback framecb, bool copy_src = true, void* data = 0);
 
 	};
 

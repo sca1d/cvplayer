@@ -3,9 +3,7 @@
 int CB_valueNum;
 int Binary_valueNum;
 
-void keyEvent(int keycode, void* _player) {
-
-	cvplayer* player = reinterpret_cast<cvplayer*>(_player);
+void keyEvent(int keycode, cvplayer* player) {
 
 	switch (keycode) {
 

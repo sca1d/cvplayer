@@ -5,15 +5,17 @@
 
 namespace cvp {
 
+	class cvplayer;
+
 	typedef struct {
-		int current_frame;
-		void* player;
-		void* data;
+		int			current_frame;
+		cvplayer*	player;
+		void*		data;
 	}input_data;
 
 	typedef void (*FrameCallback)(Mat src, Mat* dst, input_data* input);
-	typedef void (*KeyCallBack)(int keycode, void* player);
-	typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
+	typedef void (*KeyCallBack)(int keycode, cvplayer* player);
+	//typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
 
 	typedef struct _effectFunc {
 	
@@ -66,7 +68,7 @@ namespace cvp {
 
 	}keydomain;
 
-	enum {
+	enum encode_type {
 
 		ENC_AVI = 0,
 		ENC_MOV,

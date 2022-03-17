@@ -28,9 +28,7 @@ void frameCallBack(Mat src, Mat* dst, input_data* input) {
 
 }
 
-void keyCallBack(int keycode, void* _player) {
-
-	cvplayer* player = reinterpret_cast<cvplayer*>(_player);
+void keyCallBack(int keycode, cvplayer* player) {
 
 	switch (keycode) {
 

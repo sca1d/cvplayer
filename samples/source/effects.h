@@ -9,7 +9,7 @@
 using namespace cv;
 using namespace cvp;
 
-void keyEvent(int keycode, void* _player);
+void keyEvent(int keycode, cvplayer* player);
 
 void ColorBalance_effect(Mat src, Mat* dst, input_data* input);
 void ColorBalance(void);
