@@ -14,6 +14,8 @@ namespace cvp {
 		sliderdata vals[CVP_MAX_TRACKBAR];
 
 	public:
+		virtual ~slider_info(void);
+
 		virtual int GetSliderValue(int num) const = 0;
 		virtual int GetSliderValue(char* name) const = 0;
 

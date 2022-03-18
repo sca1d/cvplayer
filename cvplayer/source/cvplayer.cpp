@@ -2,6 +2,12 @@
 
 namespace cvp {
 
+	slider_info::~slider_info(void) {
+
+		free(vals);
+
+	}
+
 	inline void cvplayer::InitVals(void) {
 
 		#pragma omp parallel for
