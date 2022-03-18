@@ -76,15 +76,17 @@ void amp_test(void) {
 
 int main(void) {
 
-	amp_test();
+	//amp_test();
 
-	/*
-	cvplayer player(IMG);
-	player.AddKeyEvent(keyCallBack);
-	player.AddSlider(sliderdata("slider1", 10, 100));
+	///*
+	cvplayer* player = new cvplayer(IMG);
+	player->AddKeyEvent(keyCallBack);
+	player->AddSlider(sliderdata("slider1", 10, 100));
 
-	player.MainLoop(frameCallBack, 0);
-	*/
+	delete player;
+
+	//player.MainLoop(frameCallBack, 0);
+	//*/
 
 	return 0;
 

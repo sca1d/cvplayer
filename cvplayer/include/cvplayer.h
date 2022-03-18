@@ -11,9 +11,10 @@ namespace cvp {
 
 	protected:
 		int vals_count = 0;
-		sliderdata vals[CVP_MAX_TRACKBAR];
+		sliderdata* vals;
 
 	public:
+		slider_info(void);
 		virtual ~slider_info(void);
 
 		virtual int GetSliderValue(int num) const = 0;
@@ -59,6 +60,8 @@ namespace cvp {
 		cvplayer(void);
 		cvplayer(const char* filepath);
 		cvplayer(Mat* _src);
+
+		virtual ~cvplayer(void);
 
 		void AddKeyEvent(KeyCallBack keycb);
 

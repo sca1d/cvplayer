@@ -2,6 +2,12 @@
 
 namespace cvp {
 
+	slider_info::slider_info(void) {
+
+		vals = (sliderdata*)malloc(sizeof(sliderdata) * CVP_MAX_TRACKBAR);
+
+	}
+
 	slider_info::~slider_info(void) {
 
 		free(vals);
@@ -142,6 +148,12 @@ namespace cvp {
 		src = _src->clone();
 		InitVals();
 		cv::namedWindow(aft_win_text);
+
+	}
+	cvplayer::~cvplayer(void) {
+
+		src.release();
+		dst.release();
 
 	}
 
