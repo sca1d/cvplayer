@@ -1,13 +1,21 @@
 #pragma once
-
 #include "deflate.h"
 #include "cvplayer.h"
 
 namespace cvp {
 
-	typedef void (*FrameCallback)(Mat src, Mat* dst, void* player, void* data);
-	typedef void (*KeyCallBack)(int keycode, void* player);
-	typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
+	class slider_info;
+	class cvplayer;
+
+	typedef struct {
+		int				current_frame;
+		slider_info*	slider_data;
+		void*			data;
+	}input_data;
+
+	typedef void (*FrameCallback)(Mat src, Mat* dst, input_data* input);
+	typedef void (*KeyCallBack)(int keycode, cvplayer* player);
+	//typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
 
 	typedef struct _effectFunc {
 	
@@ -53,14 +61,14 @@ namespace cvp {
 		int start;
 		int end;
 
-		_keydomain(int _start, int _end) {
+		_keydomain(double _start, double _end) {
 			start	= _start;
 			end		= _end;
 		}
 
 	}keydomain;
 
-	enum {
+	enum encode_type {
 
 		ENC_AVI = 0,
 		ENC_MOV,

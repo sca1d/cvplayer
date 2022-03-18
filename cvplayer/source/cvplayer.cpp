@@ -2,7 +2,7 @@
 
 namespace cvp {
 
-	void cvplayer::InitVals(void) {
+	inline void cvplayer::InitVals(void) {
 
 		#pragma omp parallel for
 		for (int i = 0; i < CVP_MAX_TRACKBAR; i++) {
@@ -13,7 +13,7 @@ namespace cvp {
 
 	}
 
-	void cvplayer::MatCheck(Mat* _src) {
+	inline void cvplayer::MatCheck(Mat* _src) {
 
 		if (_src->empty()) {
 			printf("mat is null.\n");
@@ -25,6 +25,9 @@ namespace cvp {
 	int cvplayer::WaitFunc(int time) {
 
 		int keycode = waitKey(time);
+
+		// 0x20 = SPACE KEY
+		if (keycode == 0x20) PlayReverse(&this->edata);
 
 		if (keyCallBack != nullptr) {
 			keyCallBack(keycode, this);
@@ -90,19 +93,27 @@ namespace cvp {
 
 	}
 
+	void cvplayer::PlayReverse(eventdata* data) {
+
+		*data->play = *data->play > 0 ? 0 : 1;
+		*data->update = 1;
+
+	}
+
 	void cvplayer::TrackbarEvent(int val, void* userdata) {
+
 		eventdata* edata = reinterpret_cast<eventdata*>(userdata);
 		*edata->val = val;
 		*edata->update = 1;
 		//*(int*)(userdata) = val;
+
 	}
 
 	void cvplayer::MouseEvent(int e, int x, int y, int flag, void* userdata) {
 
 		if (e == EVENT_LBUTTONDOWN) {
 			eventdata* data = reinterpret_cast<eventdata*>(userdata);
-			*data->play = *data->play > 0 ? 0 : 1;
-			*data->update = 1;
+			PlayReverse(data);
 		}
 
 	}
@@ -152,13 +163,13 @@ namespace cvp {
 
 	}
 
-	int cvplayer::GetSliderValue(int num) {
+	int cvplayer::GetSliderValue(int num) const {
 
 		if (vals_count < num || CVP_MAX_TRACKBAR <= num) return 0;
 		return vals[num].value;
 
 	}
-	int cvplayer::GetSliderValue(char* name) {
+	int cvplayer::GetSliderValue(char* name) const {
 
 		for (int i = 0; i < vals_count; i++) {
 			if (strcmp(vals[i].name.c_str(), name)) {
@@ -170,7 +181,7 @@ namespace cvp {
 
 	}
 
-	bool cvplayer::Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength) {
+	bool cvplayer::Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength) {
 		
 		if (nowEncode) {
 
@@ -211,6 +222,11 @@ namespace cvp {
 			}
 
 			cv::VideoWriter output(filename, fourcc, fps, cv::Size(width, height), src.channels() > 1 ? true : false);
+			
+			input_data input;
+			input.current_frame = 0;
+			input.slider_data = (slider_info*)this;
+			input.data = effect.data;
 
 			for (int f = 0; f <= frameLength; f++) {
 
@@ -221,7 +237,8 @@ namespace cvp {
 					vals[i].value = f > 0 ? ((valueKey[i].end - valueKey[i].start) * (1.0 / ((double)frameLength / (double)f)) + valueKey[i].start) : valueKey[i].start;
 				}
 
-				effect.callBack(src, &dst, this, effect.data);
+				input.current_frame = f;
+				effect.callBack(src, &dst, &input);
 				CVP_FIX_CHANNEL(dst);
 				output << dst;
 
@@ -280,31 +297,59 @@ namespace cvp {
 
 	}
 
-	void cvplayer::MainLoop(FrameCallback framecb, void* data) {
+	void cvplayer::MainLoop(FrameCallback framecb, bool copy_src, void* data) {
 
 		int brk = 0;
+		int frame = 0;
 
-		int time = 0;
+		int count = 0;
+		float fps;
+		int st = 0,
+			et = 0;
 
 		MatCheck(&src);
+
+		dst = src.clone();
 
 		imshow(bef_win_text, src);
 		namedWindow(aft_win_text);
 		setMouseCallback(aft_win_text, MouseEvent, (void*)(&edata));
 
+		input_data input;
+		input.current_frame = frame;
+		input.slider_data = (slider_info*)this;
+		input.data = data;
+
 		while (1) {
 
-			dst = src.clone();
+			/*
+			if (count == 0) {
+				st = clock();
+			}
+			else if (count == 60) {
+				et = clock();
+				fps = 1000.f / ((et - st) / 60.f);
+				printf("fps:%f\n", fps);
+				count = 0;
+				st = clock();
+			}
+			*/
+
+			if (copy_src) dst = src.clone();
 
 			if (play || update) {
 
-				framecb(src, &dst, this, data);
+				framecb(src, &dst, &input);
 
 				PlayModeLog();
 
 				imshow(aft_win_text, dst);
 
-				if (play) time++;
+				if (play) {
+					frame++;
+					count++;
+					input.current_frame = frame;
+				}
 			
 			}
 

@@ -1,10 +1,16 @@
-﻿#include "cvplayer.h"
+﻿#include <cstdio>
+#include <amp.h>
+//#include <amp_graphics.h>
+#include <vector>
+#include "cvplayer.h"
 
 #define IMG	"F:\\SS\\画像148.jpg"
 
+using namespace concurrency;
+//using namespace concurrency::graphics;
 using namespace cvp;
 
-void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
+void frameCallBack(Mat src, Mat* dst, input_data* input) {
 
 	int xx, yy;
 
@@ -13,7 +19,7 @@ void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
 		for (int x = 0; x < src.cols; x++) {
 			for (int c = 0; c < src.channels(); c++) {
 
-				xx = x + reinterpret_cast<cvplayer*>(player)->GetSliderValue(0);
+				xx = x + input->slider_data->GetSliderValue(0);
 				yy = y;
 
 				if (0 <= xx && xx < src.cols && 0 <= yy && yy < src.rows) {
@@ -28,9 +34,7 @@ void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
 
 }
 
-void keyCallBack(int keycode, void* _player) {
-
-	cvplayer* player = reinterpret_cast<cvplayer*>(_player);
+void keyCallBack(int keycode, cvplayer* player) {
 
 	switch (keycode) {
 
@@ -44,13 +48,43 @@ void keyCallBack(int keycode, void* _player) {
 
 }
 
+void amp_test(void) {
+
+	const int num = 1920;
+
+	int aCPP[num] = {10};
+	int bCPP[num];
+	int sumCPP[num];
+
+	array_view<int, 1> a(num, aCPP);
+	array_view<int, 1> b(num, bCPP);
+	array_view<int, 1> sum(num, sumCPP);
+
+	parallel_for_each(
+		//作成されたスレッド集合の演算領域を定義する
+		sum.extent,
+		[=](index<1> idx) restrict(amp) {
+			sum[idx] = (int)a[0]++;
+	}
+	);
+
+	for (int i = 0; i < num; i++) {
+		printf("[%d] %d\n", i, sum[i]);
+	}
+
+}
+
 int main(void) {
 
+	amp_test();
+
+	/*
 	cvplayer player(IMG);
 	player.AddKeyEvent(keyCallBack);
 	player.AddSlider(sliderdata("slider1", 10, 100));
 
 	player.MainLoop(frameCallBack, 0);
+	*/
 
 	return 0;
 

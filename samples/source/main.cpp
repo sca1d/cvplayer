@@ -4,7 +4,7 @@
 
 using namespace cvp;
 
-void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
+void frameCallBack(Mat src, Mat* dst, input_data* input) {
 
 	int xx, yy;
 
@@ -12,7 +12,7 @@ void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
 		for (int x = 0; x < src.cols; x++) {
 			for (int c = 0; c < src.channels(); c++) {
 
-				xx = x + reinterpret_cast<cvplayer*>(player)->GetSliderValue(0);
+				xx = x + input->slider_data->GetSliderValue(0);
 				yy = y;
 
 				if (0 <= xx && xx < src.cols && 0 <= yy && yy < src.rows) {
@@ -25,9 +25,7 @@ void frameCallBack(Mat src, Mat* dst, void* player, void* data) {
 
 }
 
-void keyCallBack(int keycode, void* _player) {
-
-	cvplayer* player = reinterpret_cast<cvplayer*>(_player);
+void keyCallBack(int keycode, cvplayer* player) {
 
 	switch (keycode) {
 
@@ -50,7 +48,9 @@ int main(void) {
 
 	player.MainLoop(frameCallBack, 0);
 	*/
-	Binary();
+	
+	//Binary();
+	ColorBalance();
 
 	return 0;
 

@@ -7,20 +7,29 @@
 
 namespace cvp {
 
-	class cvplayer {
+	class slider_info {
+
+	protected:
+		int vals_count = 0;
+		sliderdata vals[CVP_MAX_TRACKBAR];
+
+	public:
+		virtual int GetSliderValue(int num) const = 0;
+		virtual int GetSliderValue(char* name) const = 0;
+
+	};
+
+	class cvplayer : public slider_info {
 
 	protected:
 
 		Mat	src, dst;
 
-		String	bef_win_text = "no encode.",
-				aft_win_text = "encoded.",
+		String	bef_win_text = "input (src)",
+				aft_win_text = "output (dst)",
 				enc_win_text = "encoding now...";
 
 		KeyCallBack keyCallBack = nullptr;
-
-		int vals_count = 0;
-		sliderdata vals[CVP_MAX_TRACKBAR];
 
 		/*
 		* TRUE	= 1
@@ -32,13 +41,14 @@ namespace cvp {
 
 		eventdata edata = { &vals[vals_count].value, &play, &update };
 
-		void InitVals(void);
-		void MatCheck(Mat* _src);
+		inline void InitVals(void);
+		inline void MatCheck(Mat* _src);
 		int WaitFunc(int time);
 
 		void PlayModeLog(void);
 		void EncodingLog(int now, int length);
 
+		static void PlayReverse(eventdata* data);
 		static void TrackbarEvent(int val, void* userdata);
 		static void MouseEvent(int e, int x, int y, int flag, void* userdata);
 
@@ -51,12 +61,12 @@ namespace cvp {
 		void AddKeyEvent(KeyCallBack keycb);
 
 		int AddSlider(sliderdata data);
-		int GetSliderValue(int num);
-		int GetSliderValue(char* name);
+		int GetSliderValue(int num) const;
+		int GetSliderValue(char* name) const;
 
-		bool Encode(effectFunc effect, String filename, int type, keydomain* valueKey, double fps, int frameLength);
+		bool Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength);
 
-		void MainLoop(FrameCallback framecb, void* data = 0);
+		void MainLoop(FrameCallback framecb, bool copy_src = true, void* data = 0);
 
 	};
 
