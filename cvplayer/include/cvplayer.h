@@ -64,6 +64,9 @@ namespace cvp {
 		int GetSliderValue(int num) const;
 		int GetSliderValue(char* name) const;
 
+		inline void Play(void);
+		inline void Stop(void);
+
 		bool Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength);
 
 		void MainLoop(FrameCallback framecb, bool copy_src = true, void* data = 0);

@@ -181,6 +181,13 @@ namespace cvp {
 
 	}
 
+	inline void cvplayer::Play(void) {
+		play = true;
+	}
+	inline void cvplayer::Stop(void) {
+		play = false;
+	}
+
 	bool cvplayer::Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength) {
 		
 		if (nowEncode) {
