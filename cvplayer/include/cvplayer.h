@@ -14,8 +14,8 @@ namespace cvp {
 		sliderdata vals[CVP_MAX_TRACKBAR];
 
 	public:
-		virtual int GetSliderValue(int num) = 0;
-		virtual int GetSliderValue(char* name) = 0;
+		virtual int GetSliderValue(int num) const = 0;
+		virtual int GetSliderValue(char* name) const = 0;
 
 	};
 
@@ -61,8 +61,8 @@ namespace cvp {
 		void AddKeyEvent(KeyCallBack keycb);
 
 		int AddSlider(sliderdata data);
-		int GetSliderValue(int num);
-		int GetSliderValue(char* name);
+		int GetSliderValue(int num) const;
+		int GetSliderValue(char* name) const;
 
 		bool Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength);
 

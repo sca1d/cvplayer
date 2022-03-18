@@ -163,13 +163,13 @@ namespace cvp {
 
 	}
 
-	int cvplayer::GetSliderValue(int num) {
+	int cvplayer::GetSliderValue(int num) const {
 
 		if (vals_count < num || CVP_MAX_TRACKBAR <= num) return 0;
 		return vals[num].value;
 
 	}
-	int cvplayer::GetSliderValue(char* name) {
+	int cvplayer::GetSliderValue(char* name) const {
 
 		for (int i = 0; i < vals_count; i++) {
 			if (strcmp(vals[i].name.c_str(), name)) {
