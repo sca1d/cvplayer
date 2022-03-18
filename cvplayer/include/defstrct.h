@@ -1,16 +1,16 @@
 #pragma once
-
 #include "deflate.h"
 #include "cvplayer.h"
 
 namespace cvp {
 
+	class slider_info;
 	class cvplayer;
 
 	typedef struct {
-		int			current_frame;
-		cvplayer*	player;
-		void*		data;
+		int				current_frame;
+		slider_info*	slider_data;
+		void*			data;
 	}input_data;
 
 	typedef void (*FrameCallback)(Mat src, Mat* dst, input_data* input);

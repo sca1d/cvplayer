@@ -7,7 +7,19 @@
 
 namespace cvp {
 
-	class cvplayer {
+	class slider_info {
+
+	protected:
+		int vals_count = 0;
+		sliderdata vals[CVP_MAX_TRACKBAR];
+
+	public:
+		virtual int GetSliderValue(int num) = 0;
+		virtual int GetSliderValue(char* name) = 0;
+
+	};
+
+	class cvplayer : public slider_info {
 
 	protected:
 
@@ -18,9 +30,6 @@ namespace cvp {
 				enc_win_text = "encoding now...";
 
 		KeyCallBack keyCallBack = nullptr;
-
-		int vals_count = 0;
-		sliderdata vals[CVP_MAX_TRACKBAR];
 
 		/*
 		* TRUE	= 1

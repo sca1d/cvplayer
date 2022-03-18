@@ -12,7 +12,7 @@ void frameCallBack(Mat src, Mat* dst, input_data* input) {
 		for (int x = 0; x < src.cols; x++) {
 			for (int c = 0; c < src.channels(); c++) {
 
-				xx = x + reinterpret_cast<cvplayer*>(input->player)->GetSliderValue(0);
+				xx = x + input->slider_data->GetSliderValue(0);
 				yy = y;
 
 				if (0 <= xx && xx < src.cols && 0 <= yy && yy < src.rows) {

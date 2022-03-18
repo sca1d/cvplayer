@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <amp.h>
 #include <omp.h>
 #include <ppl.h>
 #include <Windows.h>
@@ -17,6 +18,10 @@
 
 #include "..\imgctl\imgctl.h"
 
+using namespace std;
+using namespace concurrency;
+using namespace cv;
+
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "vfw32.lib")
 
@@ -26,5 +31,3 @@
 
 #define CVP_FIX_CHANNEL(_mat)	if (_mat.channels() < 3) cv::cvtColor(_mat, _mat, cv::COLOR_GRAY2BGR)
 
-using namespace std;
-using namespace cv;

@@ -101,10 +101,12 @@ namespace cvp {
 	}
 
 	void cvplayer::TrackbarEvent(int val, void* userdata) {
+
 		eventdata* edata = reinterpret_cast<eventdata*>(userdata);
 		*edata->val = val;
 		*edata->update = 1;
 		//*(int*)(userdata) = val;
+
 	}
 
 	void cvplayer::MouseEvent(int e, int x, int y, int flag, void* userdata) {
@@ -223,7 +225,7 @@ namespace cvp {
 			
 			input_data input;
 			input.current_frame = 0;
-			input.player = this;
+			input.slider_data = (slider_info*)this;
 			input.data = effect.data;
 
 			for (int f = 0; f <= frameLength; f++) {
@@ -315,7 +317,7 @@ namespace cvp {
 
 		input_data input;
 		input.current_frame = frame;
-		input.player = this;
+		input.slider_data = (slider_info*)this;
 		input.data = data;
 
 		while (1) {

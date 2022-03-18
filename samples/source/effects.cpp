@@ -19,15 +19,13 @@ void keyEvent(int keycode, cvplayer* player) {
 
 void ColorBalance_effect(Mat src, Mat* dst, input_data* input) {
 
-	cvplayer* p = reinterpret_cast<cvplayer*>(input->player);
-
 	cv::cvtColor(src, src, cv::COLOR_BGR2HSV);
 
 	std::vector<cv::Mat> mat_channels;
 	cv::split(src, mat_channels);
 
 	int hue_min = 0;
-	int hue_max = hue_min + p->GetSliderValue(CB_valueNum);
+	int hue_max = hue_min + input->slider_data->GetSliderValue(CB_valueNum);
 
 	int hsv_value;
 
@@ -62,10 +60,8 @@ void ColorBalance(void) {
 
 void Binary_effect(Mat src, Mat* dst, input_data* input) {
 
-	cvplayer* p = reinterpret_cast<cvplayer*>(input->player);
-
 	cv::cvtColor(src, src, cv::COLOR_BGR2GRAY);
-	cv::threshold(src, *dst, p->GetSliderValue(Binary_valueNum), 0xFF, cv::THRESH_BINARY);
+	cv::threshold(src, *dst, input->slider_data->GetSliderValue(Binary_valueNum), 0xFF, cv::THRESH_BINARY);
 
 }
 
