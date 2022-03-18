@@ -2,6 +2,18 @@
 
 namespace cvp {
 
+	slider_info::slider_info(void) {
+
+		vals = (sliderdata*)malloc(sizeof(sliderdata) * CVP_MAX_TRACKBAR);
+
+	}
+
+	slider_info::~slider_info(void) {
+
+		free(vals);
+
+	}
+
 	inline void cvplayer::InitVals(void) {
 
 		#pragma omp parallel for
@@ -138,6 +150,12 @@ namespace cvp {
 		cv::namedWindow(aft_win_text);
 
 	}
+	cvplayer::~cvplayer(void) {
+
+		src.release();
+		dst.release();
+
+	}
 
 	void cvplayer::AddKeyEvent(KeyCallBack keycb) {
 
@@ -179,6 +197,18 @@ namespace cvp {
 
 		return 0;
 
+	}
+
+	bool cvplayer::GetPlayMode(void) const {
+		return play;
+	}
+	void cvplayer::Play(void) {
+		play = 1;
+		update = 1;
+	}
+	void cvplayer::Stop(void) {
+		play = 0;
+		update = 1;
 	}
 
 	bool cvplayer::Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength) {
