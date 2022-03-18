@@ -199,11 +199,16 @@ namespace cvp {
 
 	}
 
-	inline void cvplayer::Play(void) {
-		play = true;
+	bool cvplayer::GetPlayMode(void) const {
+		return play;
 	}
-	inline void cvplayer::Stop(void) {
-		play = false;
+	void cvplayer::Play(void) {
+		play = 1;
+		update = 1;
+	}
+	void cvplayer::Stop(void) {
+		play = 0;
+		update = 1;
 	}
 
 	bool cvplayer::Encode(effectFunc effect, String filename, encode_type type, keydomain* valueKey, double fps, int frameLength) {

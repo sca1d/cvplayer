@@ -38,11 +38,22 @@ void keyCallBack(int keycode, cvplayer* player) {
 
 	switch (keycode) {
 
+	case 's':
+		if (player->GetPlayMode()) {
+			player->Stop();
+		}
+		else {
+			player->Play();
+		}
+		break;
+
 	case 'r':
 		keydomain kd[1] = { { 5, 90 } };
 
 		int ret = player->Encode((frameCallBack), "video.mov", ENC_MOV, kd, 30.0, 30 * 5);
 		printf("ret:%d\n", ret);
+
+		break;
 
 	}
 
@@ -83,9 +94,10 @@ int main(void) {
 	player->AddKeyEvent(keyCallBack);
 	player->AddSlider(sliderdata("slider1", 10, 100));
 
-	delete player;
 
-	//player.MainLoop(frameCallBack, 0);
+	player->MainLoop(frameCallBack, 0);
+	
+	delete player;
 	//*/
 
 	return 0;
