@@ -15,8 +15,7 @@ namespace cvp {
 
 	typedef void (*FrameCallback)(Mat src, Mat* dst, input_data* input);
 	typedef void (*KeyCallBack)(int keycode, cvplayer* player);
-	//typedef void (*CudaFrameCallback)(cv::cuda::GpuMat src, cv::cuda::GpuMat* dst, void* player, void* data);
-
+	
 	typedef struct _effectFunc {
 	
 		FrameCallback callBack;
@@ -72,7 +71,6 @@ namespace cvp {
 
 		ENC_AVI = 0,
 		ENC_MOV,
-		//ENC_GIF,
 
 	};
 

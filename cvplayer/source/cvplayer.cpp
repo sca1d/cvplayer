@@ -317,13 +317,6 @@ namespace cvp {
 			return ret;
 
 		}
-		/*
-		else if (type == ENC_GIF) {
-
-
-
-		}
-		*/
 
 	}
 
@@ -351,19 +344,6 @@ namespace cvp {
 		input.data = data;
 
 		while (1) {
-
-			/*
-			if (count == 0) {
-				st = clock();
-			}
-			else if (count == 60) {
-				et = clock();
-				fps = 1000.f / ((et - st) / 60.f);
-				printf("fps:%f\n", fps);
-				count = 0;
-				st = clock();
-			}
-			*/
 
 			if (copy_src) dst = src.clone();
 
